@@ -13,7 +13,7 @@ from engine.real_config import validate_real_env
 
 
 def main() -> int:
-    load_dotenv(ROOT / ".env", override=False)
+    load_dotenv(ROOT / ".env", override=True)
     try:
         config = validate_real_env()
     except RuntimeError as exc:
