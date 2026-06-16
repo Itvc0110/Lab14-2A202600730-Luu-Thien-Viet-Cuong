@@ -50,11 +50,11 @@ class OpenRouterEmbedder:
 
     def __init__(self, model_name: str, api_key: str | None = None) -> None:
         self.model_name = model_name
-        self.api_key = api_key or os.getenv("OPENROUTER_API_KEY", "")
-        if not self.api_key:
-            raise RuntimeError("OPENROUTER_API_KEY is required for OpenRouter embeddings.")
         config = get_runtime_config()
-        self.api_url = f"{config.openrouter_api_base.rstrip('/')}/embeddings"
+        self.api_key = api_key or config.openai_api_key
+        if not self.api_key:
+            raise RuntimeError("OPENAI_API_KEY is required for embeddings proxy.")
+        self.api_url = f"{config.openai_api_base.rstrip('/')}/embeddings"
         self._backend_name = f"openrouter:{model_name}"
 
     def __call__(self, text: str) -> list[float]:
@@ -67,6 +67,8 @@ class OpenRouterEmbedder:
                 headers={
                     "Authorization": f"Bearer {self.api_key}",
                     "Content-Type": "application/json",
+                    "HTTP-Referer": "http://localhost:3000",
+                    "X-Title": "Lab14 Embeddings"
                 },
                 method="POST",
             )
@@ -89,7 +91,7 @@ class OpenRouterEmbedder:
 def make_embedder() -> Any:
     config = get_runtime_config()
     if config.embedding_provider == "openrouter":
-        return OpenRouterEmbedder(model_name=config.embedding_model, api_key=config.openrouter_api_key)
+        return OpenRouterEmbedder(model_name=config.embedding_model, api_key=config.openai_api_key)
     return MockEmbedder()
 
 

@@ -111,7 +111,12 @@ class LLMJudge:
             request = urllib.request.Request(
                 url,
                 data=payload,
-                headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+                headers={
+                    "Authorization": f"Bearer {api_key}",
+                    "Content-Type": "application/json",
+                    "HTTP-Referer": "http://localhost:3000",
+                    "X-Title": "Lab14 Evaluation Factory"
+                },
                 method="POST",
             )
             try:

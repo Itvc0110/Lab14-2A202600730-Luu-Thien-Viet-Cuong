@@ -1,139 +1,109 @@
 {
   "metadata": {
     "version": "V3_CostAware",
-    "total": 80,
-    "pass": 70,
-    "fail": 10,
-    "timestamp": "2026-06-16 14:09:24",
+    "run_mode": "real",
+    "agent_generation_mode": "openai_api",
+    "total": 50,
+    "pass": 50,
+    "fail": 0,
+    "timestamp": "2026-06-16 16:47:35",
     "judge_modes": {
-      "fallback": 160
-    }
+      "api": 100
+    },
+    "fallback_used": false,
+    "api_call_counts": {
+      "openai_main": 50,
+      "openai_judge": 50,
+      "deepseek_judge": 50
+    },
+    "models_used": {
+      "main": "gpt-5.4-nano",
+      "openai_judge": "gpt-5.4-nano",
+      "deepseek_judge": "deepseek/deepseek-v4-flash"
+    },
+    "real_case_limit": 50
   },
   "metrics": {
-    "avg_score": 4.595012500000004,
-    "hit_rate": 0.975,
-    "hit_rate_at_5": 0.975,
-    "mrr": 0.9354166666666666,
-    "context_precision": 0.3324999999999999,
-    "context_recall": 0.975,
-    "faithfulness": 1.0,
-    "relevancy": 0.9809265281204057,
-    "agreement_rate": 0.9830750000000001,
-    "avg_latency": 0.004834971253876575,
-    "total_tokens": 20347,
-    "total_cost_usd": 0.001981,
-    "pass_rate": 0.875,
+    "avg_score": 4.77,
+    "hit_rate": 1.0,
+    "hit_rate_at_5": 1.0,
+    "mrr": 1.0,
+    "context_precision": 1.0,
+    "context_recall": 1.0,
+    "faithfulness": 0.9900796127563809,
+    "relevancy": 0.983622326979922,
+    "agreement_rate": 0.99,
+    "avg_latency": 1.3854068058183726,
+    "total_tokens": 33223,
+    "total_cost_usd": 0.037972,
+    "pass_rate": 1.0,
     "release_decision": "APPROVE"
   },
-  "failure_clusters": {
-    "none": 5,
-    "wrong_domain": 4,
-    "retrieval_miss": 2
-  },
+  "failure_clusters": {},
   "regression": {
-    "delta_v2_vs_v1": 1.1804,
-    "delta_v3_vs_v2": 0.0,
-    "cost_growth_v3_vs_v2": -0.3499,
     "release_decision": "APPROVE",
-    "blockers": []
+    "blockers": [],
+    "quality_thresholds": {
+      "avg_score_min": 4.0,
+      "hit_rate_min": 0.8,
+      "agreement_rate_min": 0.65,
+      "fallback_allowed": false
+    },
+    "regression_note": "Focused real run gates V3 directly; local V1/V2/V3 summaries remain available for regression comparison."
   },
   "version_summaries": {
-    "V1_Base": {
-      "metadata": {
-        "version": "V1_Base",
-        "total": 80,
-        "pass": 41,
-        "fail": 39,
-        "timestamp": "2026-06-16 14:09:24",
-        "judge_modes": {
-          "fallback": 160
-        }
-      },
-      "metrics": {
-        "avg_score": 3.4146624999999995,
-        "hit_rate": 0.85,
-        "hit_rate_at_5": 0.85,
-        "mrr": 0.8104166666666666,
-        "context_precision": 0.3458333333333331,
-        "context_recall": 0.85,
-        "faithfulness": 0.9988636363636363,
-        "relevancy": 0.7870865499165182,
-        "agreement_rate": 0.9673249999999995,
-        "avg_latency": 0.006283777498174459,
-        "total_tokens": 19454,
-        "total_cost_usd": 0.002915,
-        "pass_rate": 0.5125
-      },
-      "failure_clusters": {
-        "none": 23,
-        "wrong_domain": 4,
-        "retrieval_miss": 2,
-        "out_of_context_not_refused": 10
-      }
-    },
-    "V2_RetrievalPlus": {
-      "metadata": {
-        "version": "V2_RetrievalPlus",
-        "total": 80,
-        "pass": 70,
-        "fail": 10,
-        "timestamp": "2026-06-16 14:09:24",
-        "judge_modes": {
-          "fallback": 160
-        }
-      },
-      "metrics": {
-        "avg_score": 4.595012500000004,
-        "hit_rate": 0.975,
-        "hit_rate_at_5": 0.975,
-        "mrr": 0.9354166666666666,
-        "context_precision": 0.3324999999999999,
-        "context_recall": 0.975,
-        "faithfulness": 1.0,
-        "relevancy": 0.9809265281204057,
-        "agreement_rate": 0.9830750000000001,
-        "avg_latency": 0.005142772498220438,
-        "total_tokens": 20347,
-        "total_cost_usd": 0.003047,
-        "pass_rate": 0.875
-      },
-      "failure_clusters": {
-        "none": 5,
-        "wrong_domain": 4,
-        "retrieval_miss": 2
-      }
-    },
     "V3_CostAware": {
       "metadata": {
         "version": "V3_CostAware",
-        "total": 80,
-        "pass": 70,
-        "fail": 10,
-        "timestamp": "2026-06-16 14:09:24",
+        "run_mode": "real",
+        "agent_generation_mode": "openai_api",
+        "total": 50,
+        "pass": 50,
+        "fail": 0,
+        "timestamp": "2026-06-16 16:47:35",
         "judge_modes": {
-          "fallback": 160
-        }
+          "api": 100
+        },
+        "fallback_used": false,
+        "api_call_counts": {
+          "openai_main": 50,
+          "openai_judge": 50,
+          "deepseek_judge": 50
+        },
+        "models_used": {
+          "main": "gpt-5.4-nano",
+          "openai_judge": "gpt-5.4-nano",
+          "deepseek_judge": "deepseek/deepseek-v4-flash"
+        },
+        "real_case_limit": 50
       },
       "metrics": {
-        "avg_score": 4.595012500000004,
-        "hit_rate": 0.975,
-        "hit_rate_at_5": 0.975,
-        "mrr": 0.9354166666666666,
-        "context_precision": 0.3324999999999999,
-        "context_recall": 0.975,
-        "faithfulness": 1.0,
-        "relevancy": 0.9809265281204057,
-        "agreement_rate": 0.9830750000000001,
-        "avg_latency": 0.004834971253876575,
-        "total_tokens": 20347,
-        "total_cost_usd": 0.001981,
-        "pass_rate": 0.875,
+        "avg_score": 4.77,
+        "hit_rate": 1.0,
+        "hit_rate_at_5": 1.0,
+        "mrr": 1.0,
+        "context_precision": 1.0,
+        "context_recall": 1.0,
+        "faithfulness": 0.9900796127563809,
+        "relevancy": 0.983622326979922,
+        "agreement_rate": 0.99,
+        "avg_latency": 1.3854068058183726,
+        "total_tokens": 33223,
+        "total_cost_usd": 0.037972,
+        "pass_rate": 1.0,
         "release_decision": "APPROVE"
       },
-      "failure_clusters": {
-        "none": 5,
-        "wrong_domain": 4,
-        "retrieval_miss": 2
+      "failure_clusters": {},
+      "regression": {
+        "release_decision": "APPROVE",
+        "blockers": [],
+        "quality_thresholds": {
+          "avg_score_min": 4.0,
+          "hit_rate_min": 0.8,
+          "agreement_rate_min": 0.65,
+          "fallback_allowed": false
+        },
+        "regression_note": "Focused real run gates V3 directly; local V1/V2/V3 summaries remain available for regression comparison."
       }
     }
   },
