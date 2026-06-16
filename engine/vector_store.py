@@ -53,7 +53,8 @@ class OpenRouterEmbedder:
         self.api_key = api_key or os.getenv("OPENROUTER_API_KEY", "")
         if not self.api_key:
             raise RuntimeError("OPENROUTER_API_KEY is required for OpenRouter embeddings.")
-        self.api_url = "https://openrouter.ai/api/v1/embeddings"
+        config = get_runtime_config()
+        self.api_url = f"{config.openrouter_api_base.rstrip('/')}/embeddings"
         self._backend_name = f"openrouter:{model_name}"
 
     def __call__(self, text: str) -> list[float]:

@@ -33,6 +33,8 @@ class RuntimeConfig:
     openai_api_key: str
     openai_judge_api_key: str
     openrouter_api_key: str
+    openai_api_base: str
+    openrouter_api_base: str
 
 
 def _lookup(environ: Mapping[str, str], name: str) -> str:
@@ -100,6 +102,8 @@ def get_runtime_config(environ: Mapping[str, str] | None = None) -> RuntimeConfi
         openai_api_key=first_env_value(OPENAI_MAIN_KEY_NAMES, env),
         openai_judge_api_key=first_env_value(OPENAI_JUDGE_KEY_NAMES, env),
         openrouter_api_key=first_env_value(OPENROUTER_KEY_NAMES, env),
+        openai_api_base=_lookup(env, "OPENAI_API_BASE") or "https://api.openai.com/v1",
+        openrouter_api_base=_lookup(env, "OPENROUTER_API_BASE") or _lookup(env, "OPENAI_API_BASE") or "https://openrouter.ai/api/v1",
     )
 
 

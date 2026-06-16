@@ -285,8 +285,9 @@ class MainAgent:
             },
             ensure_ascii=False,
         ).encode("utf-8")
+        api_url = f"{self.config.openai_api_base.rstrip('/')}/chat/completions"
         request = urllib.request.Request(
-            "https://api.openai.com/v1/chat/completions",
+            api_url,
             data=payload,
             headers={"Authorization": f"Bearer {self.openai_key}", "Content-Type": "application/json"},
             method="POST",

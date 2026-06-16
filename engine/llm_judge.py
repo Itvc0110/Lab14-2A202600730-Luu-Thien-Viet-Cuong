@@ -48,6 +48,11 @@ class LLMJudge:
         self.run_mode = config.run_mode
         self.allow_fallback = config.allow_fallback
         self.strict_real = self.run_mode == "real" and not self.allow_fallback
+        self.openai_api_base = config.openai_api_base
+        self.openrouter_api_base = config.openrouter_api_base
+
+
+
         self.judge_mode = judge_mode or env_value("JUDGE_MODE", default="api" if self.strict_real else "hybrid")
         self.openai_model = openai_model or config.openai_judge_model
         self.deepseek_model = deepseek_model or config.deepseek_judge_model
@@ -131,8 +136,9 @@ class LLMJudge:
                 raise RuntimeError("OpenAI judge API key is required in real mode.")
             return None
         try:
+            api_url = f"{self.openai_api_base.rstrip('/')}/chat/completions"
             text, usage = self._post_chat_completion(
-                "https://api.openai.com/v1/chat/completions",
+                api_url,
                 self.openai_key,
                 self.openai_model,
                 prompt,
@@ -150,8 +156,9 @@ class LLMJudge:
                 raise RuntimeError("OPENROUTER_API_KEY is required for DeepSeek judge in real mode.")
             return None
         try:
+            api_url = f"{self.openrouter_api_base.rstrip('/')}/chat/completions"
             text, usage = self._post_chat_completion(
-                "https://openrouter.ai/api/v1/chat/completions",
+                api_url,
                 self.openrouter_key,
                 self.deepseek_model,
                 prompt,

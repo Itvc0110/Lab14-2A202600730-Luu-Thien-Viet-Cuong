@@ -104,9 +104,10 @@ class TestLab14Pipeline(unittest.TestCase):
             store = VectorStore.from_index(loaded, embedding_fn=MockEmbedder())
             results = store.search("tuổi lao động tối thiểu", top_k=1)
 
-        self.assertTrue(index_path.exists())
-        self.assertEqual(len(loaded), 2)
-        self.assertEqual(results[0]["id"], "doc_a")
+            self.assertTrue(index_path.exists())
+            self.assertEqual(len(loaded), 2)
+            self.assertEqual(results[0]["id"], "doc_a")
+
 
     def test_retrieval_metrics_score_expected_ids(self):
         from engine.retrieval_eval import RetrievalEvaluator
@@ -260,6 +261,16 @@ class TestLab14Pipeline(unittest.TestCase):
         with self.assertRaises(ValueError):
             validate_real_report(summary)
 
+    def test_custom_api_base_url_resolution(self):
+        from engine.real_config import get_runtime_config
+        config = get_runtime_config({
+            "OPENAI_API_BASE": "https://api.shopaikey.com/v1",
+            "OPENROUTER_API_BASE": "https://api.shopaikey.com/v1"
+        })
+        self.assertEqual(config.openai_api_base, "https://api.shopaikey.com/v1")
+        self.assertEqual(config.openrouter_api_base, "https://api.shopaikey.com/v1")
+
 
 if __name__ == "__main__":
     unittest.main()
+
