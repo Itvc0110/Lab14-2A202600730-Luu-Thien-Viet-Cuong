@@ -57,6 +57,24 @@ def validate_lab():
     if data["metadata"].get("version"):
         print(f"✅ Đã tìm thấy thông tin phiên bản Agent (Regression Mode)")
 
+    metadata = data["metadata"]
+    if metadata.get("run_mode") == "real":
+        print("Real API mode: enabled")
+        if metadata.get("fallback_used"):
+            print("❌ Real API report invalid: fallback_used=true")
+            return
+        api_counts = metadata.get("api_call_counts", {})
+        total = metadata.get("total", 0)
+        required_api_counts = ["openai_main", "openai_judge", "deepseek_judge"]
+        missing_api = [name for name in required_api_counts if api_counts.get(name, 0) < total]
+        if missing_api:
+            print(f"❌ Real API report invalid: insufficient API calls for {missing_api}")
+            return
+        if "fallback" in metadata.get("judge_modes", {}):
+            print("❌ Real API report invalid: judge_modes contains fallback")
+            return
+        print("✅ Real API proof fields pass: no fallback and API counts cover all cases")
+
     print("\n🚀 Bài lab đã sẵn sàng để chấm điểm!")
 
 if __name__ == "__main__":
