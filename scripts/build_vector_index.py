@@ -26,7 +26,7 @@ def load_corpus_rows() -> list[dict]:
 
 
 def main() -> int:
-    load_dotenv(ROOT / ".env", override=False)
+    load_dotenv(ROOT / ".env", override=True)
     config = validate_real_env()
     rows = load_corpus_rows()
     records = build_vector_index(rows, index_path=DEFAULT_VECTOR_INDEX_PATH)

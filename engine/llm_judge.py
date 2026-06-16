@@ -106,15 +106,27 @@ class LLMJudge:
                 "max_tokens": 300,
             }
         ).encode("utf-8")
-        request = urllib.request.Request(
-            url,
-            data=payload,
-            headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
-            method="POST",
-        )
-        with urllib.request.urlopen(request, timeout=30) as response:
-            data = json.loads(response.read().decode("utf-8"))
-        return data["choices"][0]["message"]["content"], data.get("usage", {})
+        last_error = None
+        for attempt in range(5):
+            request = urllib.request.Request(
+                url,
+                data=payload,
+                headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
+                method="POST",
+            )
+            try:
+                with urllib.request.urlopen(request, timeout=40) as response:
+                    data = json.loads(response.read().decode("utf-8"))
+                return data["choices"][0]["message"]["content"], data.get("usage", {})
+            except urllib.error.HTTPError as error:
+                last_error = error
+                if error.code not in {429, 500, 502, 503, 504}:
+                    raise
+                time.sleep(2 ** attempt)
+            except (urllib.error.URLError, TimeoutError) as error:
+                last_error = error
+                time.sleep(2 ** attempt)
+        raise RuntimeError(f"Chat completion request failed: {last_error}") from last_error
 
     def _estimate_cost(self, model_name: str, usage: dict[str, Any]) -> float:
         input_tokens = int(usage.get("prompt_tokens", usage.get("input_tokens", 0)) or 0)

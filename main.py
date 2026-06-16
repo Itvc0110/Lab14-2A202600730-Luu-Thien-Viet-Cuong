@@ -368,7 +368,7 @@ async def run_benchmark_for_version(
 
 
 async def main() -> None:
-    load_dotenv(ROOT / ".env", override=False)
+    load_dotenv(ROOT / ".env", override=True)
     config = get_runtime_config()
     if config.run_mode == "real":
         config = validate_real_env()

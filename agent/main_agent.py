@@ -286,15 +286,27 @@ class MainAgent:
             ensure_ascii=False,
         ).encode("utf-8")
         api_url = f"{self.config.openai_api_base.rstrip('/')}/chat/completions"
-        request = urllib.request.Request(
-            api_url,
-            data=payload,
-            headers={"Authorization": f"Bearer {self.openai_key}", "Content-Type": "application/json"},
-            method="POST",
-        )
-        with urllib.request.urlopen(request, timeout=45) as response:
-            data = json.loads(response.read().decode("utf-8"))
-        return data["choices"][0]["message"]["content"].strip(), data.get("usage", {})
+        last_error = None
+        for attempt in range(5):
+            request = urllib.request.Request(
+                api_url,
+                data=payload,
+                headers={"Authorization": f"Bearer {self.openai_key}", "Content-Type": "application/json"},
+                method="POST",
+            )
+            try:
+                with urllib.request.urlopen(request, timeout=45) as response:
+                    data = json.loads(response.read().decode("utf-8"))
+                return data["choices"][0]["message"]["content"].strip(), data.get("usage", {})
+            except urllib.error.HTTPError as error:
+                last_error = error
+                if error.code not in {403, 429, 500, 502, 503, 504}:
+                    raise
+                time.sleep(2 ** attempt)
+            except (urllib.error.URLError, TimeoutError) as error:
+                last_error = error
+                time.sleep(2 ** attempt)
+        raise RuntimeError(f"OpenAI main generation failed in real mode: {last_error}") from last_error
 
     async def _generate_answer(self, question: str, contexts: list[dict[str, Any]]) -> tuple[str, dict[str, Any]]:
         if self.run_mode != "real":
