@@ -300,13 +300,18 @@ class MainAgent:
                 return data["choices"][0]["message"]["content"].strip(), data.get("usage", {})
             except urllib.error.HTTPError as error:
                 last_error = error
+                try:
+                    err_body = error.read().decode("utf-8")
+                except Exception:
+                    err_body = ""
                 if error.code not in {403, 429, 500, 502, 503, 504}:
                     raise
                 time.sleep(2 ** attempt)
             except (urllib.error.URLError, TimeoutError) as error:
                 last_error = error
+                err_body = ""
                 time.sleep(2 ** attempt)
-        raise RuntimeError(f"OpenAI main generation failed in real mode: {last_error}") from last_error
+        raise RuntimeError(f"OpenAI main generation failed in real mode: {last_error}. Response body: {err_body}") from last_error
 
     async def _generate_answer(self, question: str, contexts: list[dict[str, Any]]) -> tuple[str, dict[str, Any]]:
         if self.run_mode != "real":
